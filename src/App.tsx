@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import type { Product } from "./types/Product";
 import {
   House,
@@ -10,6 +10,10 @@ import {
   Clock,
   List,
   User,
+  ArrowLeft,
+  Camera,
+  CameraIcon,
+  ChevronDown,
 } from "lucide-react";
 
 function App() {
@@ -20,24 +24,7 @@ function App() {
       nome: "Carne Bovina",
       preco: 51.48,
       quantidade: 1,
-    },
-    {
-      id: 2,
-      nome: "Arroz branco",
-      preco: 16,
-      quantidade: 3,
-    },
-    {
-      id: 3,
-      nome: "Tomate",
-      preco: 16,
-      quantidade: 2,
-    },
-    {
-      id: 4,
-      nome: "Frango",
-      preco: 10,
-      quantidade: 1,
+      unidade: "Kg",
     },
   ]);
 
@@ -67,8 +54,51 @@ function App() {
 
   // const valorRestante = orcamento - totalGasto;
   const valorRestante = orcamento - totalGasto;
-  const porcentagemGasta = (totalGasto / orcamento) * 100;
+  // const porcentagemGasta = (totalGasto / orcamento) * 100;
+  const porcentagemGasta = Math.min((totalGasto / orcamento) * 100, 100);
   // console.log(valorRestante);
+
+  // Modal do Botão
+  const [buttonAddItem, setButtonAddItem] = useState(false);
+
+  // Estados do formulário
+  const [nomeProduto, setNomeProduto] = useState("");
+  const [precoProduto, setPrecoProduto] = useState("");
+  const [quantidadeProduto, setQuantidadeProduto] = useState("");
+  const [unidadeProduto, setUnidadeProduto] = useState("");
+
+  const totalNovoProduto = Number(precoProduto) * Number(quantidadeProduto);
+
+  // Função para Salvar produto
+  function salvarProduto() {
+    if (
+      !nomeProduto ||
+      !precoProduto ||
+      !quantidadeProduto ||
+      !unidadeProduto
+    ) {
+      alert("Preencha todos os campos para salvar o Produto");
+      return;
+    }
+
+    const novoProduto: Product = {
+      id: Date.now(),
+      nome: nomeProduto,
+      preco: Number(precoProduto),
+      quantidade: Number(quantidadeProduto),
+      unidade: unidadeProduto,
+    };
+
+    setProdutos((produtosAtuais) => [...produtosAtuais, novoProduto]);
+
+    setNomeProduto("");
+    setPrecoProduto("");
+    setQuantidadeProduto("");
+    setUnidadeProduto("");
+
+    setButtonAddItem(false);
+    alert(`Produto salvo com sucesso: ${novoProduto.nome}`);
+  }
 
   return (
     <main>
@@ -89,7 +119,7 @@ function App() {
           </section>
           <section className="flex flex-col text-center">
             <h1 className="text-[28px] text-green-700 font-semibold">
-              R$ 200,00
+              {orcamento.toFixed(2)}
             </h1>
             <p className="text-[14px] font-light">Valor definido</p>
           </section>
@@ -137,8 +167,10 @@ function App() {
 
                 <div className="p-4 flex w-full justify-between rounded-xl border border-gray-200 bg-white shadow-lg shadow-gray-300/30">
                   <div>
-                    <h1 className="text-[18ßpx] font-medium">{produto.nome}</h1>
-                    <p className="text-md">qtd: {produto.quantidade}</p>
+                    <h1 className="text-[18px] font-medium">{produto.nome}</h1>
+                    <p className="text-md">
+                      qtd: {produto.quantidade} {produto.unidade}
+                    </p>
                   </div>
 
                   <div className="flex flex-col justify-between items-end">
@@ -153,20 +185,134 @@ function App() {
             ))}
           </section>
 
-          <button className="bg-green-700 py-2.5 gap-2 rounded-xl w-full text-white flex justify-center mt-3">
+          <button
+            className="bg-green-700 py-2.5 gap-2 rounded-xl w-full text-white flex justify-center mt-6"
+            onClick={() => setButtonAddItem(true)}
+          >
             <span>
               <Plus />
             </span>{" "}
             <p>Adicionar produto</p>
           </button>
-        </div>
-        <footer className="flex justify-between mt-2 pt-4 border-t border-gray-200">
-          {itensRodape.map((item) => (
-            <div className="flex flex-col items-center gap-1">
-              <span>{item.item}</span>
-              <p className="text-sm">{item.text}</p>
+
+          {buttonAddItem && (
+            <div className="fixed inset-0 overflow-y-auto p-6 bg-white">
+              <div className="flex justify-between ">
+                <button onClick={() => setButtonAddItem(false)}>
+                  <ArrowLeft />{" "}
+                </button>
+                <h1 className="text-lg font-medium">Adicionar produto</h1>{" "}
+                <Bell className="opacity-0" />
+              </div>
+
+              <div className="flex flex-col text-center mt-6 p-10 border border-dashed rounded-xl">
+                <Camera size={42} className="flex m-auto" />
+                <h1 className="text-green-700 font-medium mt-2">
+                  Adicionar foto
+                </h1>
+                <p className="text-gray-600">ou toque para selecionar</p>
+              </div>
+              <div className="mt-6">
+                <h1 className="text-[14px] font-medium mb-2">
+                  Nome do produto
+                </h1>
+                <input
+                  type="text"
+                  placeholder="Ex: Carne bovina"
+                  value={nomeProduto}
+                  onChange={(event) => setNomeProduto(event.target.value)}
+                  className="outline-none border border-gray-300 bg-white p-4 rounded-xl w-full"
+                />
+              </div>
+
+              <div className="mt-6 flex justify-between gap-6">
+                <div>
+                  <h1 className="text-[14px] font-medium mb-2">Preço (R$)</h1>
+                  <input
+                    type="text"
+                    placeholder="Ex: 42.90"
+                    value={precoProduto}
+                    onChange={(event) => setPrecoProduto(event.target.value)}
+                    className="outline-none border border-gray-300 bg-white p-4 rounded-xl w-full"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-[14px] font-medium mb-2">Quantidade</h1>
+                  <input
+                    type="text"
+                    placeholder="Ex: 1,20"
+                    value={quantidadeProduto}
+                    step="0.01"
+                    onChange={(event) =>
+                      setQuantidadeProduto(event.target.value)
+                    }
+                    className="outline-none border border-gray-300 bg-white p-4 rounded-xl w-full"
+                  />
+                </div>
+              </div>
+
+              <div className="w-full max-w-md mt-6">
+                <label className="mb-2 block text-sm font-medium text-slate-700">
+                  Unidade
+                </label>
+
+                <div className="relative">
+                  <select
+                    className="w-full appearance-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-500 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    defaultValue=""
+                    value={unidadeProduto}
+                    onChange={(event) => setUnidadeProduto(event.target.value)}
+                  >
+                    <option value="" disabled>
+                      Selecione a unidade
+                    </option>
+
+                    <option value="un">Unidade</option>
+                    <option value="kg">Kg</option>
+                    <option value="g">Gramas</option>
+                    <option value="l">Litro</option>
+                    <option value="ml">Mililitro</option>
+                  </select>
+
+                  <ChevronDown
+                    size={18}
+                    className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+                  />
+                </div>
+
+                <div className="border border-gray-300 rounded-xl mt-8 p-4 flex flex-col justify-between gap-6">
+                  <h1 className="font-medium text-[18px]">Resumo</h1>
+                  <div className="flex justify-between">
+                    <p>Total</p>
+                    <h1 className="text-xl font-bold text-green-700">
+                      R$ {totalNovoProduto.toFixed(2)}
+                    </h1>
+                  </div>
+                </div>
+
+                <button
+                  className="bg-green-700 py-2.5 gap-2 rounded-xl w-full text-white flex justify-center mt-10"
+                  onClick={salvarProduto}
+                >
+                  {/* <span>
+                    <Plus />
+                  </span>{" "} */}
+                  <p>Salvar produto</p>
+                </button>
+              </div>
             </div>
-          ))}
+          )}
+        </div>
+        <footer className="mt-8 bottom-0 left-0 z-50 w-full bg-white px-4 py-2 border-t border-gray-200">
+          <div className="flex justify-between mt-2">
+            {" "}
+            {itensRodape.map((item) => (
+              <div className="flex flex-col items-center gap-1">
+                <span>{item.item}</span>
+                <p className="text-sm">{item.text}</p>
+              </div>
+            ))}
+          </div>
         </footer>
       </div>
     </main>

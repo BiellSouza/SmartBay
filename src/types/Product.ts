@@ -3,5 +3,5 @@ export interface Product {
   nome: string;
   preco: number;
   quantidade: number;
-  //   unidade: string;
+  unidade: string;
 }
