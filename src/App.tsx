@@ -155,7 +155,6 @@ function App() {
                 onClick={() => {
                   setNovoOrcamento(orcamento.toString());
                   setModalOrcamento(true);
-                  salvarOrcamento(valor);
                 }}
               >
                 Editar
