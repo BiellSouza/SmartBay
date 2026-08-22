@@ -5,4 +5,5 @@ export interface Product {
   preco: number;
   quantidade: number;
   unidade: string;
+  dataCompra?: string;
 }

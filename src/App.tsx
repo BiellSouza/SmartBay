@@ -90,7 +90,10 @@ function App() {
       quantidade: Number(quantidadeProduto),
       unidade: unidadeProduto,
       imagem: fotoProduto,
+      dataCompra: new Date().toISOString(),
     };
+
+    console.log(novoProduto);
 
     setProdutos((produtosAtuais) => [...produtosAtuais, novoProduto]);
 
@@ -260,6 +263,12 @@ function App() {
                       <p className="text-md">
                         qtd: {produto.quantidade} {produto.unidade}
                       </p>
+                      <p className="text-sm text-gray-500">
+                        Comprado em:{" "}
+                        {new Date(produto.dataCompra).toLocaleDateString(
+                          "pt-BR",
+                        )}
+                      </p>
                     </div>
 
                     <div className="flex flex-col justify-between items-end">
@@ -308,7 +317,7 @@ function App() {
                       if (arquivo) {
                         setFotoProdutos(URL.createObjectURL(arquivo));
                       }
-                      console.log(arquivo);
+                      // console.log(arquivo);
                     }}
                   />
 
