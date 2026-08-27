@@ -22,7 +22,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import HistoryItens from "./pages/HistoryItens";
 
 function App() {
   const [orcamento, setOrcamento] = useState<number>(() => {
@@ -62,9 +62,9 @@ function App() {
 
   // const valorRestante = orcamento - totalGasto;
   const valorRestante = orcamento - totalGasto;
+
   // const porcentagemGasta = (totalGasto / orcamento) * 100;
   const porcentagemGasta = Math.min((totalGasto / orcamento) * 100, 100);
-  // console.log(valorRestante);
 
   // Modal do Botão
   const [buttonAddItem, setButtonAddItem] = useState(false);
@@ -98,45 +98,6 @@ function App() {
     setModalOrcamento(false);
   }
 
-  // Gráfico
-  const dados = [
-    { valor: 20 },
-    { valor: 45 },
-    { valor: 30 },
-    { valor: 50 },
-    { valor: 65 },
-    { valor: 52 },
-    { valor: 75 },
-    { valor: 100 },
-  ];
-
-  // Visualizar Histórico
-  const [abaAtiva, setAbaAtiva] = useState<"compras" | "resumo">("compras");
-
-  const compras = [
-    {
-      id: 1,
-      titulo: "Compra do dia",
-      data: "18/08/2026",
-      itens: 7,
-      valor: 73.5,
-    },
-    {
-      id: 2,
-      titulo: "Compra do dia",
-      data: "14/08/2026",
-      itens: 5,
-      valor: 125.2,
-    },
-    {
-      id: 3,
-      titulo: "Compra do dia",
-      data: "10/08/2026",
-      itens: 8,
-      valor: 236.4,
-    },
-  ];
-
   // Persistência de Dados
   useEffect(() => {
     const produtosSalvos = localStorage.getItem("produtos");
@@ -162,11 +123,6 @@ function App() {
   return (
     <div className="min-h-screen ">
       <main>
-        {/* <h1>Compras</h1>
-
-      <p>Orçamento: R$ {orcamento}</p>
-      <p>Produtos: {produtos.length}</p> */}
-
         <div className="p-6">
           <div className="flex justify-between">
             <Menu /> <h1 className="text-lg font-medium">Resumo da compra</h1>{" "}
@@ -323,7 +279,7 @@ function App() {
               </span>
               <p>Adicionar produto</p>
             </button>
-            {/* Add produto */}
+
             {buttonAddItem && (
               <ProductForm
                 produtoEditando={produtoEditando}
@@ -351,131 +307,7 @@ function App() {
               />
             )}
           </div>
-
-          {/*  Histórico de Compras */}
-          {/* <div>
-            <div className="flex justify-between">
-              <Menu />{" "}
-              <h1 className="text-lg font-medium">Histórico de compras</h1>{" "}
-              <SlidersHorizontal />
-            </div>
-
-            <div className="flex w-fit justify-between bg-green-100 rounded-full py-1.5 px-2 gap-4 items-center mx-auto mt-4">
-              <p className="text-sm text-green-700">Agosto de 2026</p>{" "}
-              <span>
-                <ChevronDown size={16} className="text-green-700" />
-              </span>
-            </div>
-
-            <div className="p-4 flex rounded-xl border border-t-0 border-gray-200 bg-white shadow-lg shadow-gray-300/30">
-              <div className="flex flex-col gap-3 w-[50%]">
-                <section>
-                  <h1 className="text-[12px]">Total gasto no mês</h1>
-                  <p className="text-[23px] text-green-700 font-medium">
-                    R$ 847,30
-                  </p>
-                </section>
-                <section>
-                  <h1 className="text-[12px]">Compras realizadas</h1>
-                  <p className="font-medium">12</p>
-                </section>
-              </div>
-              <div className="w-[60%]">
-                <div className="w-full h-full rounded-2xl border border-gray-200 bg-white p-3">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={dados}>
-                      <defs>
-                        <linearGradient
-                          id="corGrafico"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="#2f6b4f"
-                            stopOpacity={0.15}
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="#2f6b4f"
-                            stopOpacity={0}
-                          />
-                        </linearGradient>
-                      </defs>
-
-                      <Area
-                        type="monotone"
-                        dataKey="valor"
-                        stroke="#2f6b4f"
-                        strokeWidth={2}
-                        fill="url(#corGrafico)"
-                        dot={false}
-                        activeDot={false}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-2">
-              <div className="flex justify-between">
-                <button
-                  onClick={() => setAbaAtiva("compras")}
-                  className={`p-3 text-[12px] w-42 ${abaAtiva === "compras" ? "text-green-700 border-b-2 border-green-700" : "text-gray-500"}`}
-                >
-                  Compras
-                </button>
-                <button
-                  onClick={() => setAbaAtiva("resumo")}
-                  className={`p-3 text-[12px] w-42 ${abaAtiva === "resumo" ? "text-green-700 border-b-2 border-green-700" : "text-gray-500"}`}
-                >
-                  Resumo por categoria
-                </button>
-              </div>
-              <div></div>
-            </div>
-          </div>
-
-          <div className="space-y-3 mt-4">
-            {compras.map((compra) => (
-              <div
-                key={compra.id}
-                className="flex items-center justify-between rounded-xl bg-white p-4 border border-gray-200"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                    <ShoppingBag className="text-green-700" />
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-slate-800 text-sm">
-                      {compra.titulo}
-                    </h3>
-
-                    <p className="text-sm text-slate-500 text-[11px]">
-                      {compra.data} • {compra.itens} itens
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-green-700">
-                    {compra.valor.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </span>
-
-                  <span className="text-slate-400">
-                    <ChevronRight />
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div> */}
+          {/* <HistoryItens /> */}
 
           <footer className="fixed bottom-0 left-0 z-50 w-full bg-white px-4 py-2 border-t border-gray-200">
             {" "}
