@@ -10,7 +10,7 @@ function NavbarComponent({ label, bell = true }: NavbarComponenteProps) {
   return (
     <div>
       {" "}
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <Menu /> <h1 className="text-lg font-medium">{label}</h1>{" "}
         <Bell className={bell ? "visible" : "invisible"} />
       </div>
