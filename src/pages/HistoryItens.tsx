@@ -9,6 +9,9 @@ import {
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
 function HistoryItens() {
+  function buttonList() {
+    alert("Button funcionando!");
+  }
   // Visualizar Histórico
   const [abaAtiva, setAbaAtiva] = useState<"compras" | "resumo">("compras");
 
@@ -175,8 +178,10 @@ function HistoryItens() {
                   })}
                 </span>
 
-                <span className="text-slate-400">
-                  <ChevronRight />
+                <span className="text-slate-400 pt-2">
+                  <button onClick={buttonList} className="cursor-pointer">
+                    <ChevronRight />
+                  </button>
                 </span>
               </div>
             </div>
