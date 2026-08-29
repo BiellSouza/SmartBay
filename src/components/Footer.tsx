@@ -1,45 +1,45 @@
 import React from "react";
 import { Home, Clock, Calculator, User } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 function Footer() {
   const itensRodape = [
     {
       item: <Home />,
       text: "Resumo",
-      link: "",
+      link: "/",
     },
     {
       item: <Clock />,
       text: "Histórico",
-      link: "",
+      link: "/history",
     },
     {
       item: <Calculator />,
       text: "Calculadora",
-      link: "",
+      link: "/calculator",
     },
     {
       item: <User />,
       text: "Perfil",
-      link: "",
+      link: "/profile",
     },
   ];
   return (
-    <div className="fixed bottom-4 left-4 right-4 w-auto rounded-2xl bg-white px-6 py-3 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 w-auto rounded-2xl bg-white px-6 pb-3 pt-4 shadow-lg">
+      <hr className="mb-4 opacity-30" />
       <section className="flex justify-between w-full">
         {itensRodape.map((item, index) => (
-          //   <div key={index} className="flex flex-col items-center">
-          //     <span>{item.item}</span>
-          //     <p>{item.text}</p>
-          //   </div>
-          <a
+          <NavLink
+            to={item.link}
             key={index}
-            className="flex flex-col items-center"
-            target="_blank"
-            href={item.link}
+            className={({ isActive }) =>
+              `${isActive ? "text-green-700" : "text-gray-700"}`
+            }
           >
-            {item.item} <p>{item.text}</p>
-          </a>
+            <div className="flex justify-center">{item.item}</div>{" "}
+            <p>{item.text}</p>
+          </NavLink>
         ))}
       </section>
     </div>

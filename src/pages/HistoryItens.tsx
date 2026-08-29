@@ -7,6 +7,8 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import Footer from "../components/Footer";
+import NavbarComponent from "../components/NavbarComponent";
 
 function HistoryItens() {
   function buttonList() {
@@ -50,18 +52,26 @@ function HistoryItens() {
       itens: 8,
       valor: 236.4,
     },
+    {
+      id: 4,
+      titulo: "Compra do dia",
+      data: "10/08/2026",
+      itens: 8,
+      valor: 236.4,
+    },
+    {
+      id: 5,
+      titulo: "Compra do dia",
+      data: "10/08/2026",
+      itens: 8,
+      valor: 236.4,
+    },
   ];
 
   return (
     <div>
       {/* CABEÇALHO */}
-      <div className="flex justify-between">
-        <Menu />
-
-        <h1 className="text-lg font-medium">Histórico de compras</h1>
-
-        <SlidersHorizontal />
-      </div>
+      <NavbarComponent label="Histórico de compra" />
 
       {/* SELETOR DE MÊS */}
       <div className="flex w-fit justify-between bg-green-100 rounded-full py-1.5 px-2 gap-4 items-center mx-auto mt-4">
@@ -146,7 +156,7 @@ function HistoryItens() {
 
       {/* LISTA DE COMPRAS */}
       {abaAtiva === "compras" && (
-        <div className="space-y-3 mt-4">
+        <div className="space-y-3 mt-4 mb-22">
           {compras.map((compra) => (
             <div
               key={compra.id}
@@ -195,6 +205,8 @@ function HistoryItens() {
           <p className="text-sm text-gray-500">Resumo por categoria</p>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }

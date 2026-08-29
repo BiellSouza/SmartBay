@@ -15,28 +15,30 @@ import {
 } from "lucide-react";
 import React from "react";
 import NavbarComponent from "../components/NavbarComponent";
+import Footer from "../components/Footer";
+import { NavLink } from "react-router-dom";
 
 function Profile() {
   const infos = [
     {
       icon: <User className="size-5" />,
       label: "Dados pessoais",
-      link: "",
+      link: "/personaldata",
     },
-    {
-      icon: <MapPin className="size-5" />,
-      label: "Endereços",
-      link: "",
-    },
-    {
-      icon: <Bell className="size-5" />,
-      label: "Notificações",
-      link: "",
-    },
+    // {
+    //   icon: <MapPin className="size-5" />,
+    //   label: "Endereços",
+    //   link: "",
+    // },
+    // {
+    //   icon: <Bell className="size-5" />,
+    //   label: "Notificações",
+    //   link: "",
+    // },
     {
       icon: <Sun className="size-5" />,
       label: "Tema",
-      link: "",
+      link: "/theme",
     },
   ];
 
@@ -44,12 +46,12 @@ function Profile() {
     {
       icon: <HelpCircle className="size-5" />,
       label: "Dados pessoais",
-      link: "",
+      link: "/support",
     },
     {
       icon: <ShieldCheck className="size-5" />,
-      label: "Dados pessoais",
-      link: "",
+      label: "Política de privacidade",
+      link: "/privacy",
     },
   ];
   return (
@@ -89,7 +91,8 @@ function Profile() {
           <h1 className="font-bold">Informações da conta</h1>
           <div className="mt-3 border border-gray-300 w-full py-1 px-3 rounded-xl">
             {infos.map((item, index) => (
-              <div
+              <NavLink
+                to={item.link}
                 key={index}
                 className="flex items-center justify-between py-2 border-b last:border-b-0 border-gray-300/80"
               >
@@ -102,7 +105,7 @@ function Profile() {
                 <button>
                   <ChevronRight className="text-gray-600" />
                 </button>
-              </div>
+              </NavLink>
             ))}
           </div>
         </section>
@@ -111,7 +114,8 @@ function Profile() {
           <h1 className="font-bold">Ajuda e suporte</h1>
           <div className="mt-3 border border-gray-300 w-full py-1 px-3 rounded-xl">
             {suport.map((item, index) => (
-              <div
+              <NavLink
+                to={item.link}
                 key={index}
                 className="flex items-center justify-between py-2 border-b last:border-b-0 border-gray-300/80"
               >
@@ -124,7 +128,7 @@ function Profile() {
                 <button>
                   <ChevronRight className="text-gray-600" />
                 </button>
-              </div>
+              </NavLink>
             ))}
           </div>
         </section>
@@ -136,6 +140,7 @@ function Profile() {
           <p>Sair da conta</p>
         </button>
       </div>
+      <Footer />
     </div>
   );
 }
