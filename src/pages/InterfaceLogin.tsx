@@ -22,8 +22,10 @@ import {
   ShoppingBag,
   ChevronLeft,
   ChevronRight,
+  Calculator,
 } from "lucide-react";
 import NavbarComponent from "../components/NavbarComponent";
+import Footer from "../components/Footer";
 
 function InterfaceLogin() {
   const [orcamento, setOrcamento] = useState<number>(() => {
@@ -36,25 +38,6 @@ function InterfaceLogin() {
 
     return ProdutosSalvos ? JSON.parse(ProdutosSalvos) : [];
   });
-
-  const itensRodape = [
-    {
-      item: <Home />,
-      text: "Resumo",
-    },
-    {
-      item: <Clock />,
-      text: "Histórico",
-    },
-    // {
-    //   item: <List />,
-    //   text: "Lista",
-    // },
-    {
-      item: <User />,
-      text: "Perfil",
-    },
-  ];
 
   // Lógica do cálculo
   const totalGasto = produtos.reduce((total, produto) => {
@@ -259,7 +242,7 @@ function InterfaceLogin() {
           ))}
         </section>
         <button
-          className="bg-green-700 py-2.5 gap-2 rounded-xl w-full text-white flex justify-center mt-6 mb-24"
+          className="bg-green-700 py-2.5 gap-2 rounded-xl w-full text-white flex justify-center mt-6 mb-28"
           onClick={() => {
             setProdutoEditando(null);
             setButtonAddItem(true);
@@ -298,6 +281,8 @@ function InterfaceLogin() {
           />
         )}
       </div>
+
+      <Footer />
     </div>
   );
 }

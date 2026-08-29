@@ -27,7 +27,7 @@ function Support() {
       </div>
       <div className="bg-green-300/20 py-2 px-4 mt-7 flex rounded-2xl gap-3">
         <div className="bg-green-300/30 w-fit p-3 rounded-full m-auto">
-          <HelpCircle className="text-green-900" size={32} />
+          <HelpCircle className="text-green-800" size={32} />
         </div>
         <div className="">
           <h1 className="font-bold text-md">Como podemos ajudar?</h1>
@@ -66,7 +66,7 @@ function Support() {
         className="flex bg-green-300/30 w-full py-3 rounded-xl mt-8 cursor-pointer"
         onClick={ButtonContact}
       >
-        <p className="flex items-center gap-2 m-auto text-green-950">
+        <p className="flex items-center gap-2 m-auto text-green-950 font-bold">
           <span>
             <Mail className="size-5" />
           </span>

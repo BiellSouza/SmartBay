@@ -6,6 +6,7 @@ import HistoryItens from "./pages/HistoryItens";
 import ListItens from "./pages/MyList";
 import Privacy from "./pages/SubPages/Privacy";
 import Support from "./pages/SubPages/Support";
+import Theme from "./pages/SubPages/Theme";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/personaldata" element={<PersonalData />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/theme" element={<Theme />} />
 
             <Route path="/history" element={<HistoryItens />} />
             <Route path="/myList" element={<ListItens />} />
