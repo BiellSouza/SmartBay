@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Menu,
-  SlidersHorizontal,
   ChevronRight,
   ChevronDown,
   ShoppingBag,
@@ -11,6 +9,7 @@ import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import Footer from "../components/Footer";
 import { NavLink } from "react-router-dom";
 import { supabase } from "../services/supabase";
+import type { Product } from "../types/Product";
 
 function HistoryItens() {
   // Visualizar Histórico
@@ -18,7 +17,7 @@ function HistoryItens() {
 
   const [produtos, setProdutos] = useState<Product[]>([]);
   const [mesSelecionado, setMesSelecionado] = useState(8);
-  const [anoSelecionado, setAnoSelecionado] = useState(2026);
+  const anoSelecionado = 2026;
   const [seletorAberto, setSeletorAberto] = useState(false);
 
   const meses = [
@@ -81,14 +80,14 @@ function HistoryItens() {
 
   // console.log("TODOS OS PRODUTOS:", produtos);
 
-  produtos.forEach((produto) => {
-    // console.log(
-    //   "DATA DO PRODUTO:",
-    //   produto.dataCompra,
-    //   "→",
-    //   produto.dataCompra?.substring(0, 7),
-    // );
-  });
+  // produtos.forEach((produto) => {
+  //   console.log(
+  //     "DATA DO PRODUTO:",
+  //     produto.dataCompra,
+  //     "→",
+  //     produto.dataCompra?.substring(0, 7),
+  //   );
+  // });
   const produtosDoMes = produtos.filter((produto) => {
     if (!produto.dataCompra) return false;
 
@@ -266,49 +265,52 @@ function HistoryItens() {
       {/* LISTA DE COMPRAS */}
       {abaAtiva === "compras" && (
         <div className="space-y-3 mt-4 mb-22">
-          {Object.entries(comprasPorDia).map(([data, produtosDoDia]) => {
-            const total = produtosDoDia.reduce(
-              (soma, produto) => soma + produto.preco * produto.quantidade,
-              0,
-            );
+          {Object.entries(comprasPorDia).map(
+            ([data, produtosDoDia]: [string, Product[]]) => {
+              const total = produtosDoDia.reduce(
+                (soma: number, produto: Product) =>
+                  soma + produto.preco * produto.quantidade,
+                0,
+              );
 
-            return (
-              <div
-                key={data}
-                className="flex items-center justify-between rounded-xl bg-white p-4 border border-gray-200"
-              >
-                {/* ÍCONE E INFORMAÇÕES */}
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                    <ShoppingBag className="text-green-700" />
+              return (
+                <div
+                  key={data}
+                  className="flex items-center justify-between rounded-xl bg-white p-4 border border-gray-200"
+                >
+                  {/* ÍCONE E INFORMAÇÕES */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
+                      <ShoppingBag className="text-green-700" />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-slate-800 text-sm">
+                        Compra do dia
+                      </h3>
+
+                      <p className="text-[11px] text-slate-500">
+                        {formatarData(data)} • {produtosDoDia.length} itens
+                      </p>
+                    </div>
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-slate-800 text-sm">
-                      Compra do dia
-                    </h3>
-
-                    <p className="text-[11px] text-slate-500">
-                      {formatarData(data)} • {produtosDoDia.length} itens
-                    </p>
+                  {/* VALOR */}
+                  <div className="flex items-center gap-2">
+                    R$ {total.toFixed(2)}
+                    <span className="text-slate-400 pt-2">
+                      <NavLink
+                        to={`/myList?data=${data}`}
+                        className="cursor-pointer"
+                      >
+                        <ChevronRight />
+                      </NavLink>
+                    </span>
                   </div>
                 </div>
-
-                {/* VALOR */}
-                <div className="flex items-center gap-2">
-                  R$ {total.toFixed(2)}
-                  <span className="text-slate-400 pt-2">
-                    <NavLink
-                      to={`/myList?data=${data}`}
-                      className="cursor-pointer"
-                    >
-                      <ChevronRight />
-                    </NavLink>
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            },
+          )}
         </div>
       )}
 

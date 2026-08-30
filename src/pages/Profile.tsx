@@ -7,8 +7,6 @@ import {
   Sun,
   User,
 } from "lucide-react";
-import React from "react";
-import NavbarComponent from "../components/NavbarComponent";
 import Footer from "../components/Footer";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -16,7 +14,6 @@ import { supabase } from "../services/supabase";
 
 function Profile() {
   const [usuario, setUsuario] = useState<any>(null);
-  const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     async function carregarUsuario() {
@@ -31,12 +28,10 @@ function Profile() {
 
       if (error) {
         console.error("Erro ao carregar usuário:", error);
-        setCarregando(false);
         return;
       }
 
       setUsuario(data);
-      setCarregando(false);
     }
 
     carregarUsuario();

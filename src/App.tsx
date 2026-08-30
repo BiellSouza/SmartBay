@@ -7,7 +7,6 @@ import ListItens from "./pages/MyList";
 import Privacy from "./pages/SubPages/Privacy";
 import Support from "./pages/SubPages/Support";
 import Theme from "./pages/SubPages/Theme";
-import Notifications from "./pages/Notifications";
 
 function App() {
   return (
@@ -19,9 +18,6 @@ function App() {
             <Route path="/history" element={<HistoryItens />} />
             <Route path="/myList" element={<ListItens />} />
             <Route path="/profile" element={<Profile />} />
-
-            {/* Funcionalidades */}
-            {/* <Route path="/notifications" element={<Notifications />} /> */}
 
             {/* SubRotas */}
             <Route path="/personalData" element={<PersonalData />} />

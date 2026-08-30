@@ -95,7 +95,7 @@ function ProductForm({
       preco: Number(precoProduto.replace(",", ".")),
       quantidade: Number(quantidadeProduto),
       unidade: unidadeProduto,
-      imagem: fotoProduto,
+      imagem: fotoProduto ?? undefined,
       dataCompra: produtoEditando?.dataCompra ?? new Date().toISOString(),
     };
 

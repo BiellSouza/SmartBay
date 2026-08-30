@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import type { Product } from "../types/Product";
 import ProductForm from "../components/ProductForm";
 import { Pencil, Trash, Plus } from "lucide-react";
-import NavbarComponent from "../components/NavbarComponent";
 import Footer from "../components/Footer";
 import { supabase } from "../services/supabase";
 

@@ -8,7 +8,7 @@ function PersonalData() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [carregando, setCarregando] = useState(true);
+
   const [foto, setFoto] = useState<string | null>(null);
 
   const inputFotoRef = useRef<HTMLInputElement>(null);
@@ -23,7 +23,7 @@ function PersonalData() {
 
       if (error) {
         console.error("Erro ao carregar usuário:", error);
-        setCarregando(false);
+
         return;
       }
 
@@ -31,8 +31,6 @@ function PersonalData() {
       setEmail(data.email ?? "");
       setTelefone(data.telefone ?? "");
       setFoto(data.foto ?? null);
-
-      setCarregando(false);
     }
 
     carregarUsuario();
