@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import NavbarComponent from "../components/NavbarComponent";
 import Footer from "../components/Footer";
+import { supabase } from "../services/supabase";
 
 function InterfaceLogin() {
   const [orcamento, setOrcamento] = useState<number>(() => {
@@ -33,11 +34,13 @@ function InterfaceLogin() {
 
     return orcamentoSalvo ? JSON.parse(orcamentoSalvo) : 200;
   });
-  const [produtos, setProdutos] = useState<Product[]>(() => {
-    const ProdutosSalvos = localStorage.getItem("produtos");
+  // const [produtos, setProdutos] = useState<Product[]>(() => {
+  //   const ProdutosSalvos = localStorage.getItem("produtos");
 
-    return ProdutosSalvos ? JSON.parse(ProdutosSalvos) : [];
-  });
+  //   return ProdutosSalvos ? JSON.parse(ProdutosSalvos) : [];
+  // });
+
+  const [produtos, setProdutos] = useState<Product[]>([]);
 
   // Lógica do cálculo
   const totalGasto = produtos.reduce((total, produto) => {
@@ -55,14 +58,24 @@ function InterfaceLogin() {
   const [produtoEditando, setProdutoEditando] = useState<Product | null>(null);
 
   // Função para deletar item
-  function removerProduto(id: number) {
-    const confirm = window.confirm(`Deseja realmente apagar este Produto?`);
+  async function removerProduto(id: number) {
+    const confirmar = window.confirm("Deseja realmente apagar este Produto?");
 
-    if (confirm) {
-      setProdutos((produtosAtuais) =>
-        produtosAtuais.filter((produto) => produto.id !== id),
-      );
+    if (!confirmar) return;
+
+    const { error } = await supabase.from("produtos").delete().eq("id", id);
+
+    if (error) {
+      console.error("❌ Erro ao excluir produto:", error);
+      alert("Não foi possível excluir o produto.");
+      return;
     }
+
+    setProdutos((produtosAtuais) =>
+      produtosAtuais.filter((produto) => produto.id !== id),
+    );
+
+    alert("Produto excluído com sucesso!");
   }
 
   // Edição do orçamento
@@ -83,22 +96,50 @@ function InterfaceLogin() {
   }
 
   // Persistência de Dados
+  // useEffect(() => {
+  //   const produtosSalvos = localStorage.getItem("produtos");
+  //   const orcamentoSalvo = localStorage.getItem("orcamentoAdd");
+
+  //   if (produtosSalvos) {
+  //     setProdutos(JSON.parse(produtosSalvos));
+  //   }
+
+  //   if (orcamentoSalvo) {
+  //     setOrcamento(JSON.parse(orcamentoSalvo));
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem("produtos", JSON.stringify(produtos));
+  // }, [produtos]);
+
   useEffect(() => {
-    const produtosSalvos = localStorage.getItem("produtos");
-    const orcamentoSalvo = localStorage.getItem("orcamentoAdd");
+    async function carregarProdutos() {
+      const { data, error } = await supabase
+        .from("produtos")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (produtosSalvos) {
-      setProdutos(JSON.parse(produtosSalvos));
+      if (error) {
+        console.error("❌ Erro ao carregar produtos:", error);
+        return;
+      }
+
+      const produtosFormatados: Product[] = data.map((produto) => ({
+        id: produto.id,
+        nome: produto.nome,
+        preco: Number(produto.preco),
+        quantidade: Number(produto.quantidade),
+        unidade: produto.unidade,
+        imagem: produto.imagem,
+        dataCompra: produto.data_compra,
+      }));
+
+      setProdutos(produtosFormatados);
     }
 
-    if (orcamentoSalvo) {
-      setOrcamento(JSON.parse(orcamentoSalvo));
-    }
+    carregarProdutos();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("produtos", JSON.stringify(produtos));
-  }, [produtos]);
 
   useEffect(() => {
     localStorage.setItem("orcamentoAdd", JSON.stringify(orcamento));
@@ -259,20 +300,80 @@ function InterfaceLogin() {
           <ProductForm
             produtoEditando={produtoEditando}
             valorRestante={valorRestante}
-            onSalvar={(produto) => {
-              setProdutos((produtosAtuais) => {
-                const existe = produtosAtuais.some(
-                  (item) => item.id === produto.id,
-                );
+            onSalvar={async (produto) => {
+              const existe = produtos.some((item) => item.id === produto.id);
 
-                if (existe) {
-                  return produtosAtuais.map((item) =>
-                    item.id === produto.id ? produto : item,
-                  );
+              if (existe) {
+                const { data, error } = await supabase
+                  .from("produtos")
+                  .update({
+                    nome: produto.nome,
+                    preco: produto.preco,
+                    quantidade: produto.quantidade,
+                    unidade: produto.unidade,
+                    imagem: produto.imagem,
+                    data_compra: produto.dataCompra,
+                  })
+                  .eq("id", produto.id)
+                  .select()
+                  .single();
+
+                if (error) {
+                  console.error("❌ Erro ao atualizar produto:", error);
+                  alert("Não foi possível atualizar o produto.");
+                  return;
                 }
 
-                return [...produtosAtuais, produto];
-              });
+                const produtoAtualizado: Product = {
+                  id: data.id,
+                  nome: data.nome,
+                  preco: Number(data.preco),
+                  quantidade: Number(data.quantidade),
+                  unidade: data.unidade,
+                  imagem: data.imagem,
+                  dataCompra: data.data_compra,
+                };
+
+                setProdutos((produtosAtuais) =>
+                  produtosAtuais.map((item) =>
+                    item.id === produtoAtualizado.id ? produtoAtualizado : item,
+                  ),
+                );
+              } else {
+                const { data, error } = await supabase
+                  .from("produtos")
+                  .insert({
+                    nome: produto.nome,
+                    preco: produto.preco,
+                    quantidade: produto.quantidade,
+                    unidade: produto.unidade,
+                    imagem: produto.imagem,
+                    data_compra: produto.dataCompra,
+                  })
+                  .select()
+                  .single();
+
+                if (error) {
+                  console.error("❌ Erro ao salvar produto:", error);
+                  alert("Não foi possível salvar o produto.");
+                  return;
+                }
+
+                const novoProduto: Product = {
+                  id: data.id,
+                  nome: data.nome,
+                  preco: Number(data.preco),
+                  quantidade: Number(data.quantidade),
+                  unidade: data.unidade,
+                  imagem: data.imagem,
+                  dataCompra: data.data_compra,
+                };
+
+                setProdutos((produtosAtuais) => [
+                  ...produtosAtuais,
+                  novoProduto,
+                ]);
+              }
 
               setProdutoEditando(null);
             }}

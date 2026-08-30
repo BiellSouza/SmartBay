@@ -4,7 +4,7 @@ import type { Product } from "../types/Product";
 
 interface ProductFormProps {
   produtoEditando: Product | null;
-  onSalvar: (produto: Product) => void;
+  onSalvar: (produto: Product) => void | Promise<void>;
   onFechar: () => void;
   valorRestante: number;
 }
@@ -67,7 +67,7 @@ function ProductForm({
     setFotoProduto(imagemBase64);
   }
 
-  function salvarProduto() {
+  async function salvarProduto() {
     if (
       !nomeProduto ||
       !precoProduto ||
@@ -92,7 +92,7 @@ function ProductForm({
     const produto: Product = {
       id: produtoEditando?.id ?? Date.now(),
       nome: nomeProduto,
-      preco: Number(precoProduto),
+      preco: Number(precoProduto.replace(",", ".")),
       quantidade: Number(quantidadeProduto),
       unidade: unidadeProduto,
       imagem: fotoProduto,
@@ -111,7 +111,9 @@ function ProductForm({
     onFechar();
   }
 
-  const totalNovoProduto = Number(precoProduto) * Number(quantidadeProduto);
+  const totalNovoProduto =
+    Number(precoProduto.replace(",", ".")) *
+    Number(quantidadeProduto.replace(",", "."));
 
   return (
     <div className="fixed inset-0 overflow-y-auto p-6 bg-white">

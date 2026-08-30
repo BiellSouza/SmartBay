@@ -9,8 +9,6 @@ import Support from "./pages/SubPages/Support";
 import Theme from "./pages/SubPages/Theme";
 import Notifications from "./pages/Notifications";
 
-//Fazer o histórico funcionar corretamente
-
 function App() {
   return (
     <div className="min-h-screen max-w-100 mx-auto">
