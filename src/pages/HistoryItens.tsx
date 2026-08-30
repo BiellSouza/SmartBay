@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Menu,
   SlidersHorizontal,
@@ -11,10 +11,31 @@ import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import Footer from "../components/Footer";
 import NavbarComponent from "../components/NavbarComponent";
 import { NavLink } from "react-router-dom";
+import { supabase } from "../services/supabase";
 
 function HistoryItens() {
   // Visualizar Histórico
   const [abaAtiva, setAbaAtiva] = useState<"compras" | "resumo">("compras");
+
+  const [produtos, setProdutos] = useState<Product[]>([]);
+  const [mesSelecionado, setMesSelecionado] = useState(8);
+  const [anoSelecionado, setAnoSelecionado] = useState(2026);
+  const [seletorAberto, setSeletorAberto] = useState(false);
+
+  const meses = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ];
 
   // Gráfico
   const dados = [
@@ -28,44 +49,86 @@ function HistoryItens() {
     { valor: 100 },
   ];
 
-  // Compras
-  const compras = [
-    {
-      id: 1,
-      titulo: "Compra do dia",
-      data: "18/08/2026",
-      itens: 7,
-      valor: 73.5,
+  useEffect(() => {
+    async function carregarProdutos() {
+      const { data, error } = await supabase
+        .from("produtos")
+        .select("*")
+        .order("data_compra", { ascending: false });
+
+      // console.log("DADOS DO SUPABASE:", data);
+      // console.log("ERRO DO SUPABASE:", error);
+
+      if (error) {
+        console.error("Erro ao carregar histórico:", error);
+        return;
+      }
+
+      const produtosFormatados: Product[] = data.map((produto) => ({
+        id: produto.id,
+        nome: produto.nome,
+        preco: Number(produto.preco),
+        quantidade: Number(produto.quantidade),
+        unidade: produto.unidade,
+        imagem: produto.imagem,
+        dataCompra: produto.data_compra,
+      }));
+
+      setProdutos(produtosFormatados);
+    }
+
+    carregarProdutos();
+  }, []);
+
+  // console.log("TODOS OS PRODUTOS:", produtos);
+
+  produtos.forEach((produto) => {
+    // console.log(
+    //   "DATA DO PRODUTO:",
+    //   produto.dataCompra,
+    //   "→",
+    //   produto.dataCompra?.substring(0, 7),
+    // );
+  });
+  const produtosDoMes = produtos.filter((produto) => {
+    if (!produto.dataCompra) return false;
+
+    const mesAnoProduto = produto.dataCompra.substring(0, 7);
+
+    const mesAnoSelecionado = `${anoSelecionado}-${String(
+      mesSelecionado,
+    ).padStart(2, "0")}`;
+
+    return mesAnoProduto === mesAnoSelecionado;
+  });
+
+  const totalMes = produtosDoMes.reduce(
+    (soma, produto) => soma + produto.preco * produto.quantidade,
+    0,
+  );
+
+  const comprasPorDia = produtosDoMes.reduce(
+    (grupos, produto) => {
+      if (!produto.dataCompra) return grupos;
+
+      const chaveData = produto.dataCompra.substring(0, 10);
+
+      if (!grupos[chaveData]) {
+        grupos[chaveData] = [];
+      }
+
+      grupos[chaveData].push(produto);
+
+      return grupos;
     },
-    {
-      id: 2,
-      titulo: "Compra do dia",
-      data: "14/08/2026",
-      itens: 5,
-      valor: 125.2,
-    },
-    {
-      id: 3,
-      titulo: "Compra do dia",
-      data: "10/08/2026",
-      itens: 8,
-      valor: 236.4,
-    },
-    {
-      id: 4,
-      titulo: "Compra do dia",
-      data: "10/08/2026",
-      itens: 8,
-      valor: 236.4,
-    },
-    {
-      id: 5,
-      titulo: "Compra do dia",
-      data: "10/08/2026",
-      itens: 8,
-      valor: 236.4,
-    },
-  ];
+    {} as Record<string, Product[]>,
+  );
+
+  function formatarData(data: string) {
+    const [ano, mes, dia] = data.substring(0, 10).split("-");
+
+    return `${dia}/${mes}/${ano}`;
+  }
 
   return (
     <div>
@@ -81,12 +144,49 @@ function HistoryItens() {
         </NavLink>
       </header>
       {/* SELETOR DE MÊS */}
-      <div className="flex w-fit justify-between bg-green-100 rounded-full py-1.5 px-2 gap-4 items-center mx-auto mt-4 mb-3">
-        <p className="text-sm text-green-700">Agosto de 2026</p>
+      <div className="relative mx-auto mt-4 mb-3 w-fit">
+        <button
+          onClick={() => setSeletorAberto(!seletorAberto)}
+          className="flex items-center gap-4 rounded-full bg-green-100 px-3 py-1.5"
+        >
+          <p className="text-sm text-green-700">
+            {meses[mesSelecionado - 1]} de {anoSelecionado}
+          </p>
 
-        <span>
-          <ChevronDown size={16} className="text-green-700" />
-        </span>
+          <ChevronDown
+            size={16}
+            className={`text-green-700 transition-transform ${
+              seletorAberto ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        {seletorAberto && (
+          <div className="absolute left-1/2 z-50 mt-2 w-56 -translate-x-1/2 rounded-2xl border border-gray-200 bg-white p-3 shadow-lg">
+            <div className="grid grid-cols-3 gap-2">
+              {meses.map((mes, index) => {
+                const numeroMes = index + 1;
+
+                return (
+                  <button
+                    key={mes}
+                    onClick={() => {
+                      setMesSelecionado(numeroMes);
+                      setSeletorAberto(false);
+                    }}
+                    className={`rounded-xl px-2 py-2 text-xs ${
+                      mesSelecionado === numeroMes
+                        ? "bg-green-700 text-white"
+                        : "text-gray-600 hover:bg-green-50"
+                    }`}
+                  >
+                    {mes}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* RESUMO DO MÊS */}
@@ -96,13 +196,16 @@ function HistoryItens() {
           <section>
             <h1 className="text-[12px]">Total gasto no mês</h1>
 
-            <p className="text-[23px] text-green-700 font-medium">R$ 847,30</p>
+            <p className="text-[23px] text-green-700 font-medium">
+              R$ {totalMes.toFixed(2)}
+            </p>
           </section>
 
           <section>
             <h1 className="text-[12px]">Compras realizadas</h1>
-
-            <p className="font-medium">12</p>
+            <p className="font-medium">
+              {Object.keys(comprasPorDia).length}
+            </p>{" "}
           </section>
         </div>
 
@@ -164,45 +267,49 @@ function HistoryItens() {
       {/* LISTA DE COMPRAS */}
       {abaAtiva === "compras" && (
         <div className="space-y-3 mt-4 mb-22">
-          {compras.map((compra) => (
-            <div
-              key={compra.id}
-              className="flex items-center justify-between rounded-xl bg-white p-4 border border-gray-200"
-            >
-              {/* ÍCONE E INFORMAÇÕES */}
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                  <ShoppingBag className="text-green-700" />
+          {Object.entries(comprasPorDia).map(([data, produtosDoDia]) => {
+            const total = produtosDoDia.reduce(
+              (soma, produto) => soma + produto.preco * produto.quantidade,
+              0,
+            );
+
+            return (
+              <div
+                key={data}
+                className="flex items-center justify-between rounded-xl bg-white p-4 border border-gray-200"
+              >
+                {/* ÍCONE E INFORMAÇÕES */}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
+                    <ShoppingBag className="text-green-700" />
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-slate-800 text-sm">
+                      Compra do dia
+                    </h3>
+
+                    <p className="text-[11px] text-slate-500">
+                      {formatarData(data)} • {produtosDoDia.length} itens
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <h3 className="font-semibold text-slate-800 text-sm">
-                    {compra.titulo}
-                  </h3>
-
-                  <p className="text-[11px] text-slate-500">
-                    {compra.data} • {compra.itens} itens
-                  </p>
+                {/* VALOR */}
+                <div className="flex items-center gap-2">
+                  R$ {total.toFixed(2)}
+                  <span className="text-slate-400 pt-2">
+                    <NavLink
+                      to={`/myList?data=${data}`}
+                      className="cursor-pointer"
+                    >
+                      <ChevronRight />
+                    </NavLink>
+                  </span>
                 </div>
               </div>
-
-              {/* VALOR */}
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-green-700">
-                  {compra.valor.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </span>
-
-                <span className="text-slate-400 pt-2">
-                  <NavLink to="/myList" className="cursor-pointer">
-                    <ChevronRight />
-                  </NavLink>
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

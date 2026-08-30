@@ -239,8 +239,8 @@ function InterfaceLogin() {
 
       <div className="mt-8">
         <section className="flex justify-between items-center mb-4">
-          <p className="font-bold text-md">Itens da compra</p>{" "}
-          <button className="text-green-700 text-sm">Ver todos</button>
+          {/* <p className="font-bold text-md">Itens da compra</p>{" "} */}
+          {/* <button className="text-green-700 text-sm">Ver todos</button> */}
         </section>
         <section className="flex flex-col gap-3">
           {produtos.map((produto) => (

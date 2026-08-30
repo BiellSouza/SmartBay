@@ -14,11 +14,11 @@ function Footer() {
       text: "Histórico",
       link: "/history",
     },
-    {
-      item: <Calculator />,
-      text: "Calculadora",
-      link: "/calculator",
-    },
+    // {
+    //   item: <Calculator />,
+    //   text: "Calculadora",
+    //   link: "/calculator",
+    // },
     {
       item: <User />,
       text: "Perfil",

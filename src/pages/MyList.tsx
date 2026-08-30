@@ -1,45 +1,59 @@
 import { ArrowLeft, Receipt, ShoppingBag } from "lucide-react";
-import { NavLink } from "react-router-dom";
-
-const produtos = [
-  {
-    nome: "Carne bovina",
-    quantidade: "1,20 kg",
-    valor: "R$ 51,48",
-  },
-  {
-    nome: "Arroz branco",
-    quantidade: "2 un.",
-    valor: "R$ 16,00",
-  },
-  {
-    nome: "Frango",
-    quantidade: "1,00 kg",
-    valor: "R$ 25,00",
-  },
-  {
-    nome: "Tomate",
-    quantidade: "0,80 kg",
-    valor: "R$ 8,00",
-  },
-  {
-    nome: "Banana",
-    quantidade: "1,00 kg",
-    valor: "R$ 6,50",
-  },
-  {
-    nome: "Leite",
-    quantidade: "2 un.",
-    valor: "R$ 5,00",
-  },
-  {
-    nome: "Pão francês",
-    quantidade: "6 un.",
-    valor: "R$ 12,00",
-  },
-];
+import { data, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "../services/supabase";
+import type { Product } from "../types/Product";
 
 function ListItens() {
+  const [searchParams] = useSearchParams();
+
+  const dataSelecionada = searchParams.get("data");
+
+  const [produtos, setProdutos] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function carregarProdutos() {
+      if (!dataSelecionada) return;
+
+      const inicio = new Date(`${dataSelecionada}T00:00:00`);
+
+      const fim = new Date(inicio);
+      fim.setDate(fim.getDate() + 1);
+
+      const { data, error } = await supabase
+        .from("produtos")
+        .select("*")
+        .gte("data_compra", inicio.toISOString())
+        .lt("data_compra", fim.toISOString())
+        .order("data_compra", { ascending: true });
+
+      if (error) {
+        console.error("Erro:", error);
+        return;
+      }
+
+      const produtosFormatados: Product[] = data.map((produto) => ({
+        id: produto.id,
+        nome: produto.nome,
+        preco: Number(produto.preco),
+        quantidade: Number(produto.quantidade),
+        unidade: produto.unidade,
+        imagem: produto.imagem,
+        dataCompra: produto.data_compra,
+      }));
+
+      setProdutos(produtosFormatados);
+    }
+
+    carregarProdutos();
+  }, [dataSelecionada]);
+
+  const total = produtos.reduce(
+    (soma, produto) => soma + produto.preco * produto.quantidade,
+    0,
+  );
+
   return (
     <div className="bg-white px-2 py-2">
       <div className="mx-auto w-full max-w-md">
@@ -72,24 +86,17 @@ function ListItens() {
               </div>
 
               <div>
-                <h2 className="text-[13px] font-bold text-gray-900">
+                <h2 className="text-md font-bold text-gray-900">
                   Compra do dia
                 </h2>
 
-                <p className="mt-1 text-[14px] text-gray-700">
-                  18/08/2026
-                  <span className="mx-2">
-                    {" "}
-                    <br />
-                  </span>
-                  7 itens
+                <p className="mt-1 text-[14px] text-gray-700 flex">
+                  {dataSelecionada}
+                  <span className="mx-2"> - </span>
+                  {produtos.length} itens
                 </p>
               </div>
             </div>
-
-            <strong className="whitespace-nowrap text-[15px] font-bold text-green-700">
-              R$ 73,50
-            </strong>
           </div>
         </section>
 
@@ -125,8 +132,8 @@ function ListItens() {
                 </p>
 
                 {/* VALOR */}
-                <p className="text-right text-[16px] font-semibold text-green-700">
-                  {produto.valor}
+                <p className="text-right text-[14px] font-semibold text-green-700">
+                  R$ {(produto.preco * produto.quantidade).toFixed(2)}
                 </p>
               </div>
             ))}
@@ -140,8 +147,8 @@ function ListItens() {
               Total pago
             </span>
 
-            <strong className="text-[20px] font-bold text-white">
-              R$ 73,50
+            <strong className="whitespace-nowrap text-[15px] font-bold text-white">
+              R$ {total.toFixed(2)}
             </strong>
           </div>
         </section>
