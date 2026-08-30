@@ -149,7 +149,7 @@ function PersonalData() {
               <img
                 src={foto}
                 alt="Foto de perfil"
-                className="w-22 h-24 rounded-full object-cover"
+                className="size-24 rounded-full object-cover"
               />
             ) : (
               <User className="size-18" />
