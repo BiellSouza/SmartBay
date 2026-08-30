@@ -56,8 +56,8 @@ function Profile() {
   ];
   return (
     <div>
-      <NavbarComponent label="Meu perfil" />{" "}
-      <div className="mt-6 mb-24">
+      {/* <NavbarComponent label="Meu perfil" />{" "} */}
+      <div className="mt-4 mb-24">
         <section>
           <div className="bg-green-300/10 px-2 py-4 flex justify-between items-center">
             <div className="relative">
@@ -81,9 +81,9 @@ function Profile() {
                 Usuário Premium
               </p>
             </div>
-            <button>
+            <NavLink to="/personaldata">
               <ChevronRight />
-            </button>
+            </NavLink>
           </div>
         </section>
 

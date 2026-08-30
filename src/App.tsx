@@ -7,6 +7,9 @@ import ListItens from "./pages/MyList";
 import Privacy from "./pages/SubPages/Privacy";
 import Support from "./pages/SubPages/Support";
 import Theme from "./pages/SubPages/Theme";
+import Notifications from "./pages/Notifications";
+
+//Fazer o histórico funcionar corretamente
 
 function App() {
   return (
@@ -15,15 +18,19 @@ function App() {
         <div className="p-6">
           <Routes>
             <Route path="/" element={<InterfaceLogin />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/history" element={<HistoryItens />} />
             <Route path="/myList" element={<ListItens />} />
+            <Route path="/profile" element={<Profile />} />
+
+            {/* Funcionalidades */}
+            {/* <Route path="/notifications" element={<Notifications />} /> */}
 
             {/* SubRotas */}
-            <Route path="/personaldata" element={<PersonalData />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/support" element={<Support />} />
+            <Route path="/personalData" element={<PersonalData />} />
             <Route path="/theme" element={<Theme />} />
+            <Route path="/support" element={<Support />} />
+
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </div>
       </main>

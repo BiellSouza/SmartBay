@@ -105,7 +105,7 @@ function InterfaceLogin() {
   }, [orcamento]);
   return (
     <div>
-      <NavbarComponent label="Resumo da compra" />
+      {/* <NavbarComponent label="Resumo da compra" /> */}
       <div className="mt-4 p-4 flex flex-col gap-3 rounded-xl border border-t-0 border-gray-200 bg-white shadow-lg shadow-gray-300/30">
         <section className="flex justify-between">
           <p className="font-medium text-sm">Orçamento</p>{" "}

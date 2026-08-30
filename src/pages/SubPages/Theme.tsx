@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import NavbarComponent from "../../components/NavbarComponent";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, ArrowLeft } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 type ThemeSelect = "light" | "dark";
 function Theme() {
@@ -10,10 +11,17 @@ function Theme() {
   }
   return (
     <div>
-      <NavbarComponent label="Tema" />
-
+      <header className="flex items-center justify-between">
+        <NavLink
+          to="/profile"
+          className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
+          aria-label="Voltar"
+        >
+          <ArrowLeft className="size-6 text-gray-900" />
+        </NavLink>
+      </header>
       <div>
-        <h1 className="text-[18px] text-gray-900 font-medium mt-10 mb-4">
+        <h1 className="text-[18px] text-gray-900 font-medium mt-4 mb-4">
           Escolha o tema do aplicativo
         </h1>
 

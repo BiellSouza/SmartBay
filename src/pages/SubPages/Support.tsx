@@ -1,6 +1,13 @@
 import React from "react";
 import NavbarComponent from "../../components/NavbarComponent";
-import { HelpCircle, Search, ChevronRight, Mail } from "lucide-react";
+import {
+  HelpCircle,
+  Search,
+  ChevronRight,
+  Mail,
+  ArrowLeft,
+} from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 function Support() {
   function ButtonContact() {
@@ -23,9 +30,17 @@ function Support() {
   return (
     <div>
       <div>
-        <NavbarComponent label="Central de ajuda" bell={false} />
+        <header className="flex items-center justify-between">
+          <NavLink
+            to="/profile"
+            className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
+            aria-label="Voltar"
+          >
+            <ArrowLeft className="size-6 text-gray-900" />
+          </NavLink>
+        </header>
       </div>
-      <div className="bg-green-300/20 py-2 px-4 mt-7 flex rounded-2xl gap-3">
+      <div className="bg-green-300/20 py-2 px-4 mt-4 flex rounded-2xl gap-3">
         <div className="bg-green-300/30 w-fit p-3 rounded-full m-auto">
           <HelpCircle className="text-green-800" size={32} />
         </div>

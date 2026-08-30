@@ -1,4 +1,5 @@
 import { ArrowLeft, Receipt, ShoppingBag } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const produtos = [
   {
@@ -44,20 +45,21 @@ function ListItens() {
       <div className="mx-auto w-full max-w-md">
         {/* CABEÇALHO */}
         <header className="flex items-center justify-between">
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer"
+          <NavLink
+            to="/history"
+            className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
             aria-label="Voltar"
           >
             <ArrowLeft className="size-6 text-gray-900" />
-          </button>
+          </NavLink>
 
           <h1 className="text-xl font-bold text-gray-900">Detalhe da compra</h1>
 
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-full cursor-pointer"
+            className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
             aria-label="Recibo"
           >
-            <Receipt className="size-6 text-gray-900" />
+            <Receipt className="size-6 text-green-600" />
           </button>
         </header>
 

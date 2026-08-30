@@ -5,15 +5,14 @@ import {
   ChevronRight,
   ChevronDown,
   ShoppingBag,
+  ArrowLeft,
 } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import Footer from "../components/Footer";
 import NavbarComponent from "../components/NavbarComponent";
+import { NavLink } from "react-router-dom";
 
 function HistoryItens() {
-  function buttonList() {
-    alert("Button funcionando!");
-  }
   // Visualizar Histórico
   const [abaAtiva, setAbaAtiva] = useState<"compras" | "resumo">("compras");
 
@@ -71,10 +70,18 @@ function HistoryItens() {
   return (
     <div>
       {/* CABEÇALHO */}
-      <NavbarComponent label="Histórico de compra" />
-
+      {/* <NavbarComponent label="Histórico de compra" /> */}
+      <header className="flex items-center justify-between">
+        <NavLink
+          to="/"
+          className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
+          aria-label="Voltar"
+        >
+          <ArrowLeft className="size-6 text-gray-900" />
+        </NavLink>
+      </header>
       {/* SELETOR DE MÊS */}
-      <div className="flex w-fit justify-between bg-green-100 rounded-full py-1.5 px-2 gap-4 items-center mx-auto mt-4">
+      <div className="flex w-fit justify-between bg-green-100 rounded-full py-1.5 px-2 gap-4 items-center mx-auto mt-4 mb-3">
         <p className="text-sm text-green-700">Agosto de 2026</p>
 
         <span>
@@ -189,9 +196,9 @@ function HistoryItens() {
                 </span>
 
                 <span className="text-slate-400 pt-2">
-                  <button onClick={buttonList} className="cursor-pointer">
+                  <NavLink to="/myList" className="cursor-pointer">
                     <ChevronRight />
-                  </button>
+                  </NavLink>
                 </span>
               </div>
             </div>

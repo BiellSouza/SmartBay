@@ -1,11 +1,21 @@
 import React from "react";
 import NavbarComponent from "../../components/NavbarComponent";
-import { Camera, Pencil, User } from "lucide-react";
+import { Camera, Pencil, User, ArrowLeft } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 function PersonalData() {
   return (
     <div>
-      <NavbarComponent label="Dados pessoais" bell={false} />
+      {/* <NavbarComponent label="Dados pessoais" bell={false} /> */}
+      <header className="flex items-center justify-between">
+        <NavLink
+          to="/profile"
+          className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
+          aria-label="Voltar"
+        >
+          <ArrowLeft className="size-6 text-gray-900" />
+        </NavLink>
+      </header>
       <div className="flex flex-col items-center mt-6">
         <div className="relative">
           <div className="bg-[#C7EAD5] p-4 rounded-full w-fit">

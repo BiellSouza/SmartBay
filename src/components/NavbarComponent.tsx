@@ -6,13 +6,15 @@ interface NavbarComponenteProps {
   bell?: boolean;
 }
 
-function NavbarComponent({ label, bell = true }: NavbarComponenteProps) {
+function NavbarComponent({ label, bell = false }: NavbarComponenteProps) {
   return (
-    <div>
+    <div className="">
       {" "}
       <div className="flex justify-between items-center">
         <Menu className="opacity-0" />{" "}
-        <h1 className="text-lg font-medium">{label}</h1>{" "}
+        <h1 className="text-lg font-medium border-b border-gray-300">
+          {label}
+        </h1>{" "}
         <Bell className={bell ? "visible" : "invisible"} />
       </div>
     </div>

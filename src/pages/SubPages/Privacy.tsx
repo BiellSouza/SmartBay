@@ -1,6 +1,12 @@
 import React from "react";
 import NavbarComponent from "../../components/NavbarComponent";
-import { ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck,
+  ArrowLeft,
+} from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 export default function Privacy() {
   const topics = [
@@ -28,10 +34,18 @@ export default function Privacy() {
   return (
     <div>
       <div>
-        <NavbarComponent label="Política de privacidade" bell={false} />
+        <header className="flex items-center justify-between">
+          <NavLink
+            to="/profile"
+            className="flex h-10 w-fit items-center justify-center rounded-full cursor-pointer"
+            aria-label="Voltar"
+          >
+            <ArrowLeft className="size-6 text-gray-900" />
+          </NavLink>
+        </header>
       </div>
 
-      <div className="bg-green-300/20 py-2 px-4 mt-7 flex flex-col rounded-2xl">
+      <div className="bg-green-300/20 py-2 px-4 mt-4 flex flex-col rounded-2xl">
         <div className="bg-green-300/30 w-fit p-3 rounded-full m-auto">
           <ShieldCheck className="text-green-900" size={44} />
         </div>
