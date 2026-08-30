@@ -38,7 +38,7 @@ function Footer() {
             }
           >
             <div className="flex justify-center">{item.item}</div>{" "}
-            <p>{item.text}</p>
+            <p className="text-sm mt-1">{item.text}</p>
           </NavLink>
         ))}
       </section>

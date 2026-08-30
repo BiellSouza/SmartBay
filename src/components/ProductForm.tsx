@@ -6,12 +6,14 @@ interface ProductFormProps {
   produtoEditando: Product | null;
   onSalvar: (produto: Product) => void;
   onFechar: () => void;
+  valorRestante: number;
 }
 
 function ProductForm({
   produtoEditando,
   onSalvar,
   onFechar,
+  valorRestante,
 }: ProductFormProps) {
   const [nomeProduto, setNomeProduto] = useState("");
   const [precoProduto, setPrecoProduto] = useState("");
@@ -73,6 +75,17 @@ function ProductForm({
       !unidadeProduto
     ) {
       alert("Preencha todos os campos para salvar o Produto");
+      return;
+    }
+
+    const totalNovoProduto =
+      Number(precoProduto.replace(",", ".")) *
+      Number(quantidadeProduto.replace(",", "."));
+
+    if (totalNovoProduto > valorRestante) {
+      alert(
+        `Seu orçamento estourou, seu valor restante para gastar é de R$ ${valorRestante}, e seu produto ultrapassa o orçamento em R$ ${totalNovoProduto - valorRestante}`,
+      );
       return;
     }
 

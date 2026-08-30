@@ -103,6 +103,7 @@ function InterfaceLogin() {
   useEffect(() => {
     localStorage.setItem("orcamentoAdd", JSON.stringify(orcamento));
   }, [orcamento]);
+
   return (
     <div>
       {/* <NavbarComponent label="Resumo da compra" /> */}
@@ -257,6 +258,7 @@ function InterfaceLogin() {
         {buttonAddItem && (
           <ProductForm
             produtoEditando={produtoEditando}
+            valorRestante={valorRestante}
             onSalvar={(produto) => {
               setProdutos((produtosAtuais) => {
                 const existe = produtosAtuais.some(
