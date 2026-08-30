@@ -1,11 +1,4 @@
-import React from "react";
-import NavbarComponent from "../../components/NavbarComponent";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ShieldCheck,
-  ArrowLeft,
-} from "lucide-react";
+import { ChevronRight, ShieldCheck, ArrowLeft } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export default function Privacy() {

@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import Footer from "../components/Footer";
-import NavbarComponent from "../components/NavbarComponent";
 import { NavLink } from "react-router-dom";
 import { supabase } from "../services/supabase";
 

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import NavbarComponent from "../../components/NavbarComponent";
+import { useState } from "react";
 import { Moon, Sun, ArrowLeft } from "lucide-react";
 import { NavLink } from "react-router-dom";
 

@@ -1,29 +1,7 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import type { Product } from "../types/Product";
 import ProductForm from "../components/ProductForm";
-import {
-  Pencil,
-  House,
-  Menu,
-  Bell,
-  Trash,
-  Plus,
-  Home,
-  Clock,
-  List,
-  User,
-  ArrowLeft,
-  Camera,
-  CameraIcon,
-  ChevronDown,
-  SlidersHorizontal,
-  ArrowBigDown,
-  ShoppingBag,
-  ChevronLeft,
-  ChevronRight,
-  Calculator,
-} from "lucide-react";
+import { Pencil, Trash, Plus } from "lucide-react";
 import NavbarComponent from "../components/NavbarComponent";
 import Footer from "../components/Footer";
 import { supabase } from "../services/supabase";

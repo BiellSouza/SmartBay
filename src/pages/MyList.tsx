@@ -1,5 +1,5 @@
 import { ArrowLeft, Receipt, ShoppingBag } from "lucide-react";
-import { data, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "../services/supabase";

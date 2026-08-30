@@ -1,11 +1,5 @@
-import React from 'react'
-
 function Notifications() {
-  return (
-    <div>
-        
-    </div>
-  )
+  return <div></div>;
 }
 
-export default Notifications
+export default Notifications;

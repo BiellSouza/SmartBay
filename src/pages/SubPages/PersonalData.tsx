@@ -1,6 +1,4 @@
-import React from "react";
-import NavbarComponent from "../../components/NavbarComponent";
-import { Camera, Pencil, User, ArrowLeft } from "lucide-react";
+import { Pencil, User, ArrowLeft } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabase";

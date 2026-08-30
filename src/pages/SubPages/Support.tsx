@@ -1,5 +1,3 @@
-import React from "react";
-import NavbarComponent from "../../components/NavbarComponent";
 import {
   HelpCircle,
   Search,
