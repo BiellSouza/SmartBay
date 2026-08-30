@@ -25,7 +25,7 @@ function Footer() {
     },
   ];
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-auto rounded-2xl bg-white px-6 pb-3 pt-4 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 max-w-100 m-auto rounded-2xl bg-white px-6 pb-3 pt-4 shadow-lg">
       <hr className="mb-4 opacity-30" />
       <section className="flex justify-between w-full">
         {itensRodape.map((item, index) => (
