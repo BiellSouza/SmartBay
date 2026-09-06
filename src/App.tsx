@@ -10,9 +10,9 @@ import Theme from "./pages/SubPages/Theme";
 
 function App() {
   return (
-    <div className="min-h-screen max-w-100 mx-auto">
+    <div className="min-h-screen max-w-100 mx-auto lg:m-0 lg:max-w-full overflow-hidden">
       <main>
-        <div className="p-6">
+        <div className="p-6 lg:p-0">
           <Routes>
             <Route path="/" element={<InterfaceLogin />} />
             <Route path="/history" element={<HistoryItens />} />
@@ -20,11 +20,11 @@ function App() {
             <Route path="/profile" element={<Profile />} />
 
             {/* SubRotas */}
-            <Route path="/personalData" element={<PersonalData />} />
+            {/* <Route path="/personalData" element={<PersonalData />} />
             <Route path="/theme" element={<Theme />} />
             <Route path="/support" element={<Support />} />
 
-            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/privacy" element={<Privacy />} /> */}
           </Routes>
         </div>
       </main>
