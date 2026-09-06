@@ -20,7 +20,7 @@ import {
   Plus,
   CalendarCheck,
 } from "lucide-react";
-import { PieChart, Pie, Tooltip, Legend } from "recharts";
+import { PieChart, Pie, Tooltip } from "recharts";
 import { CartesianGrid, XAxis, YAxis } from "recharts";
 import logo from "../assets/logoSmartbay.png";
 import imgSidebar from "../assets/sidebarImg.png";
