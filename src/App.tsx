@@ -1,16 +1,12 @@
 import Profile from "./pages/Profile";
 import { Route, Routes } from "react-router-dom";
-import PersonalData from "./pages/SubPages/PersonalData";
 import InterfaceLogin from "./pages/InterfaceLogin";
 import HistoryItens from "./pages/HistoryItens";
 import ListItens from "./pages/MyList";
-import Privacy from "./pages/SubPages/Privacy";
-import Support from "./pages/SubPages/Support";
-import Theme from "./pages/SubPages/Theme";
 
 function App() {
   return (
-    <div className="min-h-screen max-w-100 mx-auto lg:m-0 lg:max-w-full overflow-hidden">
+    <div className="min-h-screen max-w-100 mx-auto lg:m-0 lg:max-w-full overflow-hidden border border-gray-300 my-2 lg:border-none">
       <main>
         <div className="p-6 lg:p-0">
           <Routes>
